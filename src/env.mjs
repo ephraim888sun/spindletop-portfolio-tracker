@@ -13,7 +13,7 @@ export const env = createEnv({
         description: 'This gets updated depending on your environment',
       })
       .default('development'),
-    ALPHA_VANTAGE_API_KEY: z.string().min(1),
+    DATABASE_URL: z.string().min(1),
   },
   /*
    * Environment variables available on the client (and server).
@@ -29,6 +29,5 @@ export const env = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-    ALPHA_VANTAGE_API_KEY: process.env.ALPHA_VANTAGE_API_KEY,
   },
 })

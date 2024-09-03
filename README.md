@@ -26,6 +26,8 @@ API Endpoints
 
 # Development
 
+Check out **`.env.example`** to configure environment variables.
+
 First, run the development server:
 
 ```bash
@@ -33,6 +35,65 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+
+
+# Database Schema Design
+
+## Overview
+
+The database schema for this project is designed to manage and track organizations, stocks, transactions, and error logs. The schema aims to provide a comprehensive structure for handling stock portfolios and related operations efficiently.
+
+## Schema Tables
+
+### 1. Organization Table
+
+- **`id`**: A unique identifier for each organization. This is an auto-incrementing integer.
+- **`name`**: The name of the organization. This field must be unique to prevent duplication.
+- **`createdAt`**: Timestamp for when the organization was created. Automatically set to the current date and time.
+- **`updatedAt`**: Timestamp for when the organization was last updated. Automatically updated whenever changes are made.
+- **`stocks`**: A one-to-many relationship with the `Stock` table, indicating that an organization can have multiple stocks.
+
+### 2. Stock Table
+
+- **`id`**: A unique identifier for each stock. This is an auto-incrementing integer.
+- **`ticker`**: The stock ticker symbol, which is unique for each stock.
+- **`symbol`**: A unique symbol representing the stock.
+- **`initialPrice`**: The price at which the stock was initially bought.
+- **`dateBought`**: The date when the stock was purchased.
+- **`organizationId`**: Foreign key linking to the `Organization` table, indicating which organization the stock belongs to.
+- **`organization`**: A many-to-one relationship with the `Organization` table.
+- **`transactions`**: A one-to-many relationship with the `Transaction` table, representing the transactions associated with the stock.
+
+### 3. Transaction Table
+
+- **`id`**: A unique identifier for each transaction. This is an auto-incrementing integer.
+- **`stockId`**: Foreign key linking to the `Stock` table, indicating which stock the transaction is associated with.
+- **`stock`**: A many-to-one relationship with the `Stock` table.
+- **`quantity`**: The number of shares involved in the transaction.
+- **`price`**: The price at which the stock was bought or sold.
+- **`date`**: The date when the transaction occurred.
+- **`type`**: Enum indicating the type of transaction. Possible values are `BUY` and `SELL`.
+
+
+### 4. ErrorLog Table
+
+- **`id`**: A unique identifier for each error log entry. This is an auto-incrementing integer.
+- **`errorDate`**: Timestamp for when the error occurred. Automatically set to the current date and time.
+- **`errorMessage`**: Description of the error encountered.
+- **`errorIdentifier`**: Unique identifier for the error to track and manage errors efficiently.
+
+## Additional Details
+
+- **`TransactionType` Enum**: Defines the possible types of transactions (`BUY` and `SELL`) to categorize the nature of each transaction.
+- **Relationships**: The schema uses foreign key relationships to link `Stock` with `Organization` and `Transaction` with `Stock`, ensuring referential integrity and enabling efficient querying.
+
+## Rationale
+
+The schema is designed to provide a clear and structured approach to managing stock portfolios. By including timestamps (`createdAt`, `updatedAt`, and `errorDate`), it facilitates tracking and auditing changes. Relationships between tables help maintain data integrity and allow for efficient data retrieval and management.
+
+This design supports the core functionalities needed for portfolio tracking and error logging, ensuring that all relevant data is captured and can be queried effectively.
+
 
 
 # API Documentation
