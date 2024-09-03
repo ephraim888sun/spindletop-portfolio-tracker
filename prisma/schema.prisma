@@ -25,15 +25,16 @@ model Organization {
 }
 
 model Asset {
-  id             Int           @id @default(autoincrement())
-  symbol         String        @unique
-  initialPrice   Float
-  dateBought     DateTime
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  organizationId Int
-  organization   Organization  @relation(fields: [organizationId], references: [id])
-  transactions   Transaction[]
+  id                 Int           @id @default(autoincrement())
+  symbol             String        @unique
+  initialPrice       Float
+  initialShareAmount Int
+  dateBought         DateTime
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  organizationId     Int
+  organization       Organization  @relation(fields: [organizationId], references: [id])
+  transactions       Transaction[]
 }
 
 model Transaction {

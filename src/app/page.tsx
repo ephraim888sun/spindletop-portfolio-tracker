@@ -1,9 +1,6 @@
 'use client'
-import useSWR from 'swr'
-import Image from 'next/image'
 
 import { Button } from '@/components/ui/button'
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { CalendarDateRangePicker } from '@/components/date-range-picker'
 import { Overview } from '@/components/overview'
@@ -11,30 +8,10 @@ import { RecentTransactions } from '@/components/recent-transactions'
 import AssetTable from '@/components/asset-table'
 import Header from '@/components/header'
 import Nav from '@/components/nav'
-import { fetcher } from '@/lib/fetcher'
-import { TryAgain } from '@/components/try-again'
-import { LoadingScreen } from '@/components/loading-screen'
-
 
 export default function HomePage() {
-  const { data: assets, error, isLoading } = useSWR('/api/asset/holdings', fetcher)
-
-  if (isLoading) {
-    return (
-      <LoadingScreen />
-    );
-  }
-
-  if (error) {
-    return (
-      <TryAgain />
-    );
-  }
-
-  console.log('assets', assets)
 
   return (
-    <>
       <div className='flex-col flex'>
         <Nav />
         <div className='flex-1 space-y-4 p-8 pt-6'>
@@ -71,6 +48,5 @@ export default function HomePage() {
           </Tabs>
         </div>
       </div>
-    </>
   )
 }

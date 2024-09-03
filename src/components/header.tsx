@@ -1,7 +1,28 @@
+'use client'
 import React from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { useHoldings } from '@/hooks/useHoldings'
+import { LoadingScreen } from './loading-screen'
+import { TryAgain } from './try-again'
+import { formatPrice } from '@/lib/format'
 
 const Header = () => {
+
+   const { assets, portfolio, isError, isLoading } = useHoldings()
+
+    if (isLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  if (isError) {
+    return (
+      <TryAgain />
+    );
+  }
+
+
   return (
     <div className='grid gap-4 md:grid-cols-2 lg:grid-cols-4'>
       <Card>
@@ -21,7 +42,7 @@ const Header = () => {
           </svg>
         </CardHeader>
         <CardContent>
-          <div className='text-2xl font-bold'>$350,231.89</div>
+          <div className='text-2xl font-bold'>{formatPrice(portfolio.totalValue)}</div>
           <p className='text-xs text-muted-foreground'>
             +20.1% from last month
           </p>
@@ -30,6 +51,50 @@ const Header = () => {
       <Card>
         <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
           <CardTitle className='text-sm font-medium'>Rate of Return</CardTitle>
+           <svg
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth='2'
+              className='h-4 w-4 text-muted-foreground'
+            >
+              <path d='M22 12h-4l-3 9L9 3l-3 9H2' />
+            </svg>
+        </CardHeader>
+        <CardContent>
+          <div className='text-2xl font-bold'>4.7%</div>
+          <p className='text-xs text-muted-foreground'>+2.1% from last month</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+          <CardTitle className='text-sm font-medium'>Total Holdings</CardTitle>
+          <svg
+              xmlns='http://www.w3.org/2000/svg'
+              viewBox='0 0 24 24'
+              fill='none'
+              stroke='currentColor'
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              strokeWidth='2'
+              className='h-4 w-4 text-muted-foreground'
+            >
+              <rect width='20' height='14' x='2' y='5' rx='2' />
+              <path d='M2 10h20' />
+            </svg>
+        </CardHeader>
+        <CardContent>
+          <div className='text-2xl font-bold'>{portfolio?.totalAssets}</div>
+          <p className='text-xs text-muted-foreground'>+2 from last month</p>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
+          <CardTitle className='text-sm font-medium'>Total Members</CardTitle>
+           
           <svg
             xmlns='http://www.w3.org/2000/svg'
             viewBox='0 0 24 24'
@@ -46,50 +111,7 @@ const Header = () => {
           </svg>
         </CardHeader>
         <CardContent>
-          <div className='text-2xl font-bold'>4.7%</div>
-          <p className='text-xs text-muted-foreground'>+2.1% from last month</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-          <CardTitle className='text-sm font-medium'>Total Holdings</CardTitle>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth='2'
-            className='h-4 w-4 text-muted-foreground'
-          >
-            <rect width='20' height='14' x='2' y='5' rx='2' />
-            <path d='M2 10h20' />
-          </svg>
-        </CardHeader>
-        <CardContent>
-          <div className='text-2xl font-bold'>68</div>
-          <p className='text-xs text-muted-foreground'>+10 from last month</p>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className='flex flex-row items-center justify-between space-y-0 pb-2'>
-          <CardTitle className='text-sm font-medium'>Total Members</CardTitle>
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            viewBox='0 0 24 24'
-            fill='none'
-            stroke='currentColor'
-            strokeLinecap='round'
-            strokeLinejoin='round'
-            strokeWidth='2'
-            className='h-4 w-4 text-muted-foreground'
-          >
-            <path d='M22 12h-4l-3 9L9 3l-3 9H2' />
-          </svg>
-        </CardHeader>
-        <CardContent>
-          <div className='text-2xl font-bold'>89</div>
+          <div className='text-2xl font-bold'>90</div>
           <p className='text-xs text-muted-foreground'>+24 this past year</p>
         </CardContent>
       </Card>

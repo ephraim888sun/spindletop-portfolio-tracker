@@ -3,14 +3,13 @@ import { MainNav } from '@/components/main-nav'
 import { Search } from '@/components/search'
 import TeamSwitcher from '@/components/team-switcher'
 import { UserNav } from '@/components/user-nav'
-import useSWR from 'swr'
-import { fetcher } from '@/lib/fetcher'
 import { TryAgain } from './try-again'
 import { LoadingScreen } from './loading-screen'
+import { useOrganizations } from '@/hooks/useOrganizations'
 
 const Nav = () => {
 
-  const { data: organizations, error, isLoading } = useSWR('/api/organization', fetcher)
+  const { organizations, isError, isLoading } = useOrganizations()
 
  
   if (isLoading) {
@@ -19,7 +18,7 @@ const Nav = () => {
     );
   }
 
-  if (error) {
+  if (isError) {
     return (
       <TryAgain />
     );

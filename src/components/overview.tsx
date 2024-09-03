@@ -25,16 +25,14 @@ import {
   ChartTooltipContent,
 } from '@/components/ui/chart'
 import { Button } from '@/components/ui/button'
+import { useHoldings } from '@/hooks/useHoldings'
+import { LoadingScreen } from './loading-screen'
+import { TryAgain } from './try-again'
+import { formatPrice, getRandomColor } from '@/lib/format'
 
 export const description = 'A pie chart with a label'
 
-const chartData = [
-  { asset: 'chrome', value: 275, fill: 'var(--color-chrome)' },
-  { asset: 'safari', value: 200, fill: 'var(--color-safari)' },
-  { asset: 'firefox', value: 187, fill: 'var(--color-firefox)' },
-  { asset: 'edge', value: 173, fill: 'var(--color-edge)' },
-  { asset: 'other', value: 90, fill: 'var(--color-other)' },
-]
+
 
 const chartConfig = {
   value: {
@@ -63,6 +61,30 @@ const chartConfig = {
 } satisfies ChartConfig
 
 export function Overview() {
+
+   const { assets, portfolio, isError, isLoading } = useHoldings()
+
+    if (isLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  if (isError) {
+    return (
+      <TryAgain />
+    );
+  }
+
+  const chartData = portfolio.assets.map((asset: any) => ({
+    asset: asset.symbol,
+    value: asset.totalValue,
+    fill: getRandomColor(),
+  }));
+
+  console.log('asset', assets)
+  console.log('portfolio', portfolio)
+
   return (
     <Card className='col-span-4'>
       <CardHeader className='flex flex-row justify-between items-center'>
@@ -85,7 +107,7 @@ export function Overview() {
       <CardContent className='flex-1 pb-0'>
         <ChartContainer
           config={chartConfig}
-          className='mx-auto aspect-square max-h-[250px] pb-0 [&_.recharts-pie-label-text]:fill-foreground'
+          className='mx-auto aspect-square max-h-[500px] pb-0 [&_.recharts-pie-label-text]:fill-foreground'
         >
           <PieChart>
             <ChartTooltip content={<ChartTooltipContent hideLabel />} />

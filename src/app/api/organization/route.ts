@@ -1,11 +1,10 @@
-import prisma from '@/app/lib/db';
+import { fetchOrganizations } from '@/app/actions/fetchOrganizations';
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(request: NextRequest) {
 
   try {
-    const organizations = await prisma.organization.findMany()
-    console.log('organizations', organizations)
+    const organizations = await fetchOrganizations()
 
     return NextResponse.json(organizations, {
       status: 200,

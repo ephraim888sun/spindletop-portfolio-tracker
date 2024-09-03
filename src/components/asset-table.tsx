@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import {
   Table,
@@ -16,15 +17,32 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
 import { EllipsisVertical, MoveVerticalIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useHoldings } from '@/hooks/useHoldings'
+import { LoadingScreen } from './loading-screen'
+import { TryAgain } from './try-again'
+import { formatPrice } from '@/lib/format'
 
 const AssetTable = () => {
+
+  const { assets, portfolio, isError, isLoading } = useHoldings()
+
+    if (isLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  if (isError) {
+    return (
+      <TryAgain />
+    );
+  }
+
   return (
     <Card className='col-span-4'>
       <CardHeader className='flex flex-row justify-between items-center'>
@@ -58,12 +76,13 @@ const AssetTable = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            <TableRow>
-              <TableCell className='font-medium'>AAPL</TableCell>
-              <TableCell>100</TableCell>
-              <TableCell>$120.50</TableCell>
-              <TableCell>$135.25</TableCell>
-              <TableCell>$13,525.00</TableCell>
+            {assets && assets?.map((asset: any) => {
+              return <TableRow key={asset.id}>
+                <TableCell className='font-medium'>{asset.symbol}</TableCell>
+              <TableCell>{asset?.initialShareAmount}</TableCell>
+              <TableCell>{formatPrice(asset?.initialPrice)}</TableCell>
+              <TableCell>{formatPrice(asset?.financeData?.price?.regularMarketPrice)}</TableCell>
+              <TableCell>{formatPrice(asset?.totalValue)}</TableCell>
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -73,180 +92,12 @@ const AssetTable = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align='end'>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Sell</DropdownMenuItem>
+                    <DropdownMenuItem>See More</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='font-medium'>MSFT</TableCell>
-              <TableCell>50</TableCell>
-              <TableCell>$250.00</TableCell>
-              <TableCell>$275.75</TableCell>
-              <TableCell>$13,787.50</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup='true' size='icon' variant='ghost'>
-                      <MoveVerticalIcon className='h-4 w-4' />
-                      <span className='sr-only'>Toggle menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align='end'>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Sell</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='font-medium'>AMZN</TableCell>
-              <TableCell>25</TableCell>
-              <TableCell>$2,500.00</TableCell>
-              <TableCell>$2,750.00</TableCell>
-              <TableCell>$68,750.00</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup='true' size='icon' variant='ghost'>
-                      <MoveVerticalIcon className='h-4 w-4' />
-                      <span className='sr-only'>Toggle menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align='end'>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Sell</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='font-medium'>AMZN</TableCell>
-              <TableCell>25</TableCell>
-              <TableCell>$2,500.00</TableCell>
-              <TableCell>$2,750.00</TableCell>
-              <TableCell>$68,750.00</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup='true' size='icon' variant='ghost'>
-                      <MoveVerticalIcon className='h-4 w-4' />
-                      <span className='sr-only'>Toggle menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align='end'>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Sell</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='font-medium'>AMZN</TableCell>
-              <TableCell>25</TableCell>
-              <TableCell>$2,500.00</TableCell>
-              <TableCell>$2,750.00</TableCell>
-              <TableCell>$68,750.00</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup='true' size='icon' variant='ghost'>
-                      <MoveVerticalIcon className='h-4 w-4' />
-                      <span className='sr-only'>Toggle menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align='end'>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Sell</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='font-medium'>AMZN</TableCell>
-              <TableCell>25</TableCell>
-              <TableCell>$2,500.00</TableCell>
-              <TableCell>$2,750.00</TableCell>
-              <TableCell>$68,750.00</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup='true' size='icon' variant='ghost'>
-                      <MoveVerticalIcon className='h-4 w-4' />
-                      <span className='sr-only'>Toggle menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align='end'>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Sell</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='font-medium'>AMZN</TableCell>
-              <TableCell>25</TableCell>
-              <TableCell>$2,500.00</TableCell>
-              <TableCell>$2,750.00</TableCell>
-              <TableCell>$68,750.00</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup='true' size='icon' variant='ghost'>
-                      <MoveVerticalIcon className='h-4 w-4' />
-                      <span className='sr-only'>Toggle menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align='end'>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Sell</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='font-medium'>AMZN</TableCell>
-              <TableCell>25</TableCell>
-              <TableCell>$2,500.00</TableCell>
-              <TableCell>$2,750.00</TableCell>
-              <TableCell>$68,750.00</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup='true' size='icon' variant='ghost'>
-                      <MoveVerticalIcon className='h-4 w-4' />
-                      <span className='sr-only'>Toggle menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align='end'>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Sell</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell className='font-medium'>TSLA</TableCell>
-              <TableCell>10</TableCell>
-              <TableCell>$800.00</TableCell>
-              <TableCell>$900.00</TableCell>
-              <TableCell>$9,000.00</TableCell>
-              <TableCell>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup='true' size='icon' variant='ghost'>
-                      <MoveVerticalIcon className='h-4 w-4' />
-                      <span className='sr-only'>Toggle menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align='end'>
-                    <DropdownMenuItem>Edit</DropdownMenuItem>
-                    <DropdownMenuItem>Sell</DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
-            </TableRow>
+              </TableRow>
+            })}
           </TableBody>
         </Table>
       </CardContent>
