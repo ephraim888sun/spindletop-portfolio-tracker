@@ -1,4 +1,5 @@
-import { Metadata } from 'next'
+'use client'
+import useSWR from 'swr'
 import Image from 'next/image'
 
 import { Button } from '@/components/ui/button'
@@ -14,12 +15,14 @@ import { UserNav } from '@/components/user-nav'
 import AssetTable from '@/components/asset-table'
 import Header from '@/components/header'
 
-export const metadata: Metadata = {
-  title: 'Dashboard',
-  description: 'Spindletop Dashboard.',
-}
 
-export default function DashboardPage() {
+const fetcher = (url: string) => fetch(url).then((r) => r.json())
+
+export default function HomePage() {
+  const { data, error, isLoading } = useSWR('/api/asset/holdings', fetcher)
+
+  console.log('data', data)
+
   return (
     <>
       <div className='md:hidden'>
