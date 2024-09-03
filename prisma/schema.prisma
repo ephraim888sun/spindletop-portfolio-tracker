@@ -49,10 +49,12 @@ model Transaction {
 }
 
 model ErrorLog {
-  id              Int      @id @default(autoincrement())
-  errorDate       DateTime @default(now())
-  errorMessage    String
-  errorIdentifier String   @unique
+  id              String   @id @default(cuid())
+  name            String
+  message         String
+  error_stack     String
+  component_stack String
+  createdAt       DateTime @default(now())
 }
 
 enum TransactionType {

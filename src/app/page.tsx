@@ -12,10 +12,24 @@ import AssetTable from '@/components/asset-table'
 import Header from '@/components/header'
 import Nav from '@/components/nav'
 import { fetcher } from '@/lib/fetcher'
+import { TryAgain } from '@/components/try-again'
+import { LoadingScreen } from '@/components/loading-screen'
 
 
 export default function HomePage() {
   const { data: assets, error, isLoading } = useSWR('/api/asset/holdings', fetcher)
+
+  if (isLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  if (error) {
+    return (
+      <TryAgain />
+    );
+  }
 
   console.log('assets', assets)
 

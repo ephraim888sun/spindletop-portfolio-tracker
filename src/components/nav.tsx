@@ -5,12 +5,27 @@ import TeamSwitcher from '@/components/team-switcher'
 import { UserNav } from '@/components/user-nav'
 import useSWR from 'swr'
 import { fetcher } from '@/lib/fetcher'
+import { TryAgain } from './try-again'
+import { LoadingScreen } from './loading-screen'
 
 const Nav = () => {
 
-  const { data: organizations } = useSWR('/api/organization', fetcher)
+  const { data: organizations, error, isLoading } = useSWR('/api/organization', fetcher)
 
-  if (!organizations) {
+ 
+  if (isLoading) {
+    return (
+      <LoadingScreen />
+    );
+  }
+
+  if (error) {
+    return (
+      <TryAgain />
+    );
+  }
+
+   if (!organizations) {
     return
   }
 
