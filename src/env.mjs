@@ -14,6 +14,7 @@ export const env = createEnv({
       })
       .default('development'),
     DATABASE_URL: z.string().min(1),
+    DIRECT_URL: z.string().min(1),
   },
   /*
    * Environment variables available on the client (and server).
@@ -29,5 +30,7 @@ export const env = createEnv({
    */
   runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
+    DATABASE_URL: process.env.DATABASE_URL,
+    DIRECT_URL: process.env.DIRECT_URL,
   },
 })

@@ -43,46 +43,21 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 
-const groups = [
-  //   {
-  //     label: 'Personal Account',
-  //     teams: [
-  //       {
-  //         label: 'Alicia Koch',
-  //         value: 'personal',
-  //       },
-  //     ],
-  //   },
-  {
-    label: 'Teams',
-    teams: [
-      {
-        label: 'Spindletop Energy Investment Fund',
-        value: 'spindletop-energy',
-      },
-      {
-        label: 'Monsters Inc.',
-        value: 'monsters',
-      },
-    ],
-  },
-]
-
-type Team = (typeof groups)[number]['teams'][number]
-
 type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverTrigger>
 
-interface TeamSwitcherProps extends PopoverTriggerProps {}
+interface TeamSwitcherProps extends PopoverTriggerProps {
+  organizations: any
+}
 
-export default function TeamSwitcher({ className }: TeamSwitcherProps) {
+export default function TeamSwitcher({ className, organizations }: TeamSwitcherProps) {
   const [open, setOpen] = React.useState(false)
-  const [showNewTeamDialog, setShowNewTeamDialog] = React.useState(false)
-  const [selectedTeam, setSelectedTeam] = React.useState<Team>(
-    groups[0].teams[0]
+  const [showNewTeamDialog, setShowNewOrganizationDialog] = React.useState(false)
+  const [selectedOrganization, setSelectedOrganization] = React.useState<any>(
+    organizations[0]
   )
 
   return (
-    <Dialog open={showNewTeamDialog} onOpenChange={setShowNewTeamDialog}>
+    <Dialog open={showNewTeamDialog} onOpenChange={setShowNewOrganizationDialog}>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
@@ -92,15 +67,18 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
             aria-label='Select a team'
             className={cn('w-max min-w-[200px] justify-between', className)}
           >
+
             <Avatar className='mr-2 h-5 w-5'>
               <AvatarImage
-                src={`https://avatar.vercel.sh/${selectedTeam.value}.png`}
-                alt={selectedTeam.label}
+                src={`${selectedOrganization.avatar && selectedOrganization.avatar}` }
+                alt={selectedOrganization.label}
                 className='grayscale'
               />
-              <AvatarFallback>SC</AvatarFallback>
-            </Avatar>
-            {selectedTeam.label}
+              <AvatarFallback>
+                <div className="h-6 w-6 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" />
+              </AvatarFallback>
+            </Avatar>            
+            {selectedOrganization.name}
             <CaretSortIcon className='ml-auto h-4 w-4 shrink-0 opacity-50' />
           </Button>
         </PopoverTrigger>
@@ -108,37 +86,37 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
           <Command>
             <CommandInput placeholder='Search team...' />
             <CommandList>
-              <CommandEmpty>No team found.</CommandEmpty>
-              {groups.map((group) => (
-                <CommandGroup key={group.label} heading={group.label}>
-                  {group.teams.map((team) => (
-                    <CommandItem
-                      key={team.value}
+              <CommandEmpty>No organization found.</CommandEmpty>
+              {organizations.map((organization: any) => (
+                <CommandGroup key={organization.tag} heading={"Organizations"}>
+                   <CommandItem
+                      key={organization.tag}
                       onSelect={() => {
-                        setSelectedTeam(team)
+                        setSelectedOrganization(organization)
                         setOpen(false)
                       }}
                       className='text-sm'
                     >
                       <Avatar className='mr-2 h-5 w-5'>
                         <AvatarImage
-                          src={`https://avatar.vercel.sh/${team.value}.png`}
-                          alt={team.label}
+                          src={`${selectedOrganization.avatar && selectedOrganization.avatar}` }
+                          alt={selectedOrganization.name}
                           className='grayscale'
                         />
-                        <AvatarFallback>SC</AvatarFallback>
+                        <AvatarFallback>
+                          <div className="h-6 w-6 rounded-full bg-gradient-to-r from-cyan-500 to-blue-500" />
+                        </AvatarFallback>
                       </Avatar>
-                      {team.label}
+                      {organization.name}
                       <CheckIcon
                         className={cn(
                           'ml-auto h-4 w-4',
-                          selectedTeam.value === team.value
+                          selectedOrganization.tag === organization.tag
                             ? 'opacity-100'
                             : 'opacity-0'
                         )}
                       />
                     </CommandItem>
-                  ))}
                 </CommandGroup>
               ))}
             </CommandList>
@@ -149,7 +127,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
                   <CommandItem
                     onSelect={() => {
                       setOpen(false)
-                      setShowNewTeamDialog(true)
+                      setShowNewOrganizationDialog(true)
                     }}
                   >
                     <PlusCircledIcon className='mr-2 h-5 w-5' />
@@ -163,15 +141,15 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
       </Popover>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create team</DialogTitle>
+          <DialogTitle>Create organization</DialogTitle>
           <DialogDescription>
-            Add a new team to manage products and customers.
+            Add a new organization to manage assets and holdings.
           </DialogDescription>
         </DialogHeader>
         <div>
           <div className='space-y-4 py-2 pb-4'>
             <div className='space-y-2'>
-              <Label htmlFor='name'>Team name</Label>
+              <Label htmlFor='name'>Organization name</Label>
               <Input id='name' placeholder='Acme Inc.' />
             </div>
             <div className='space-y-2'>
@@ -199,10 +177,10 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
           </div>
         </div>
         <DialogFooter>
-          <Button variant='outline' onClick={() => setShowNewTeamDialog(false)}>
+          <Button variant='outline' onClick={() => setShowNewOrganizationDialog(false)}>
             Cancel
           </Button>
-          <Button type='submit'>Continue</Button>
+          <Button type='submit' disabled>Continue</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -17,39 +17,41 @@ datasource db {
 model Organization {
   id        Int      @id @default(autoincrement())
   name      String   @unique
+  tag       String   @unique
+  avatar    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   portfolio Asset[]
 }
 
 model Asset {
-  id             Int       @id @default(autoincrement())
-  symbol          String    @unique
-  initialPrice    Float
-  dateBought      DateTime
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  organizationId  Int
-  organization    Organization @relation(fields: [organizationId], references: [id])
-  transactions    Transaction[]
+  id             Int           @id @default(autoincrement())
+  symbol         String        @unique
+  initialPrice   Float
+  dateBought     DateTime
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  organizationId Int
+  organization   Organization  @relation(fields: [organizationId], references: [id])
+  transactions   Transaction[]
 }
 
 model Transaction {
-  id         Int      @id @default(autoincrement())
-  assetId    Int
-  asset      Asset    @relation(fields: [assetId], references: [id])
-  quantity   Int
-  price      Float
-  date       DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  type       TransactionType // Enum for buy/sell
+  id        Int             @id @default(autoincrement())
+  assetId   Int
+  asset     Asset           @relation(fields: [assetId], references: [id])
+  quantity  Int
+  price     Float
+  date      DateTime
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  type      TransactionType // Enum for buy/sell
 }
 
 model ErrorLog {
-  id             Int      @id @default(autoincrement())
-  errorDate      DateTime @default(now())
-  errorMessage   String
+  id              Int      @id @default(autoincrement())
+  errorDate       DateTime @default(now())
+  errorMessage    String
   errorIdentifier String   @unique
 }
 

@@ -147,7 +147,7 @@ GET /api/assets?symbol=AAPL
 
 ### 3. Get a List of Top Gainers/Top Sellers
 
-- **Endpoint:** `/api/assets/dailg-gainers`
+- **Endpoint:** `/api/assets/daily-gainers`
 - **Method:** `GET`
 - **Description:** Retrieves a list of daily gainers based on performance metrics.
 
@@ -169,6 +169,27 @@ GET /api/assets/daily-gainers
 ]
 
 ```
+
+### 4. Get a List of Organizations
+
+- **Endpoint:** `/api/organizations`
+- **Method:** `GET`
+- **Description:** Retrieves a list of organizations
+
+#### Example Request
+```http
+GET /api/assets/daily-gainers
+
+[
+  {
+    "createdAt": "2024-09-02T20:57:07.000Z",
+    "id": 2,
+    "name": "Spindletop Energy Investment Fund",
+    "updatedAt": "2024-09-02T20:57:06.000Z"
+  }
+]
+```
+
 
 
 # Deployment
