@@ -32,9 +32,9 @@ const Nav = () => {
     <div className='border-b'>
         <div className='flex h-16 items-center px-4'>
         <TeamSwitcher organizations={organizations} />
-        <MainNav className='mx-6' />
+        <MainNav className='mx-6 hidden md:flex' />
         <div className='ml-auto flex items-center space-x-4'>
-            <Search />
+           <span className='hidden sm:flex'> <Search /></span>
             <UserNav />
         </div>
         </div>

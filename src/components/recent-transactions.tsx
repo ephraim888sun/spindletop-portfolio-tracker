@@ -20,7 +20,7 @@ import { EllipsisVertical } from 'lucide-react'
 
 export function RecentTransactions() {
   return (
-    <Card className='col-span-3'>
+    <Card className='col-span-4 lg:col-span-3'>
       <CardHeader className='flex flex-row justify-between items-center'>
         <div>
           <CardTitle>Recent Transactions</CardTitle>
